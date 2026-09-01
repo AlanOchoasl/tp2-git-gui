@@ -1,0 +1,10 @@
+# Java
+*.class
+
+# NetBeans
+**/build/
+**/dist/
+**/nbproject/private/
+
+# Logs
+*.log
