@@ -4,19 +4,42 @@
  */
 package GUI;
 
-/**
- *
- * @author Charly Cimino
- */
+import java.util.Random;
+import java.net.URL;
+import javax.swing.ImageIcon;
+
 public class Pantalla extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Pantalla.class.getName());
 
-    /**
-     * Creates new form Pantalla
-     */
+    private int numeroRandom;
+    private int intentos = 0;
+    private int fallidos = 0;
+    
     public Pantalla() {
         initComponents();
+        
+        jTrofeo.setVisible(false);
+        
+        Random random = new Random();
+        numeroRandom = random.nextInt(900)+ 100;
+        
+        
+        System.out.println("El numero es: " + numeroRandom);
+        
+        char digito1 = String.valueOf(numeroRandom).charAt(0);
+        pswDigito1.setText(String.valueOf(digito1));
+        
+        char digito2 = String.valueOf(numeroRandom).charAt(1);
+        pswDigito2.setText(String.valueOf(digito2));
+        
+        char digito3 = String.valueOf(numeroRandom).charAt(2);
+        pswDigito3.setText(String.valueOf(digito3));
+        
+        pswDigito1.setEchoChar('$');
+        pswDigito2.setEchoChar('$');
+        pswDigito3.setEchoChar('$');
+        
     }
 
     /**
@@ -29,82 +52,119 @@ public class Pantalla extends javax.swing.JFrame {
     private void initComponents() {
 
         dkpPantalla = new javax.swing.JDesktopPane();
-        psw1 = new javax.swing.JPasswordField();
-        psw2 = new javax.swing.JPasswordField();
-        psw3 = new javax.swing.JPasswordField();
-        lbMagnitud = new javax.swing.JLabel();
-        lbTrofeo = new javax.swing.JLabel();
+        Panel = new javax.swing.JPanel();
+        pswDigito1 = new javax.swing.JPasswordField();
+        pswDigito2 = new javax.swing.JPasswordField();
+        pswDigito3 = new javax.swing.JPasswordField();
         btnRevelar = new javax.swing.JButton();
+        jEscribirDigitos = new javax.swing.JTextField();
+        jPistas = new javax.swing.JLabel();
+        jTrofeo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        psw1.setText("jPasswordField1");
+        Panel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
 
-        psw2.setText("jPasswordField1");
+        pswDigito1.setBackground(new java.awt.Color(255, 255, 51));
+        pswDigito1.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
+        pswDigito1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pswDigito1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pswDigito1ActionPerformed(evt);
+            }
+        });
 
-        psw3.setText("jPasswordField1");
+        pswDigito2.setBackground(new java.awt.Color(255, 51, 204));
+        pswDigito2.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
+        pswDigito2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        lbMagnitud.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        lbMagnitud.setText("escribe 3 digitos");
+        pswDigito3.setBackground(new java.awt.Color(153, 255, 51));
+        pswDigito3.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
+        pswDigito3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        lbTrofeo.setBackground(new java.awt.Color(153, 153, 0));
-        lbTrofeo.setForeground(new java.awt.Color(255, 204, 51));
-        lbTrofeo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTrofeo.setIcon(new javax.swing.ImageIcon("E:\\Descargas Disco Local (A)\\Copia de seguridad\\Facultad 2\\ULP\\Laboratorio I\\tp2\\tp2-git-gui\\Tp2Laboratorio\\img\\Screenshot_1.png")); // NOI18N
-        lbTrofeo.setText("TROFEO");
-        lbTrofeo.setToolTipText("");
+        btnRevelar.setText("Revelar");
+        btnRevelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRevelarActionPerformed(evt);
+            }
+        });
 
-        btnRevelar.setText("REVELAR");
+        jEscribirDigitos.setBackground(new java.awt.Color(255, 255, 255));
+        jEscribirDigitos.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jEscribirDigitos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jEscribirDigitos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jEscribirDigitosActionPerformed(evt);
+            }
+        });
+        jEscribirDigitos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jEscribirDigitosKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jEscribirDigitosKeyTyped(evt);
+            }
+        });
 
-        dkpPantalla.setLayer(psw1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        dkpPantalla.setLayer(psw2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        dkpPantalla.setLayer(psw3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        dkpPantalla.setLayer(lbMagnitud, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        dkpPantalla.setLayer(lbTrofeo, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        dkpPantalla.setLayer(btnRevelar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jPistas.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+
+        jTrofeo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
+        Panel.setLayout(PanelLayout);
+        PanelLayout.setHorizontalGroup(
+            PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(PanelLayout.createSequentialGroup()
+                        .addComponent(pswDigito1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pswDigito2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pswDigito3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPistas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(PanelLayout.createSequentialGroup()
+                        .addComponent(jEscribirDigitos)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRevelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)))
+                .addGap(18, 18, 18)
+                .addComponent(jTrofeo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+        PanelLayout.setVerticalGroup(
+            PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pswDigito2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pswDigito1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pswDigito3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(74, 74, 74)
+                .addComponent(jPistas)
+                .addGap(18, 18, 18)
+                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jEscribirDigitos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRevelar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(92, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTrofeo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        dkpPantalla.setLayer(Panel, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout dkpPantallaLayout = new javax.swing.GroupLayout(dkpPantalla);
         dkpPantalla.setLayout(dkpPantallaLayout);
         dkpPantallaLayout.setHorizontalGroup(
             dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dkpPantallaLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dkpPantallaLayout.createSequentialGroup()
-                        .addComponent(psw1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(psw3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnRevelar)
-                        .addComponent(lbMagnitud)))
-                .addGroup(dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dkpPantallaLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(lbTrofeo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(dkpPantallaLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(psw2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+            .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         dkpPantallaLayout.setVerticalGroup(
             dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dkpPantallaLayout.createSequentialGroup()
-                .addGroup(dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dkpPantallaLayout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(psw3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(psw2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dkpPantallaLayout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(psw1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                .addGroup(dkpPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbMagnitud)
-                    .addComponent(lbTrofeo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRevelar)
-                .addGap(28, 28, 28))
+            .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -121,15 +181,96 @@ public class Pantalla extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pswDigito1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswDigito1ActionPerformed
+        
+    }//GEN-LAST:event_pswDigito1ActionPerformed
+
+    private void btnRevelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevelarActionPerformed
+        
+        
+        if (intentos == 0){
+            pswDigito1.setEchoChar((char)0);
+            intentos++;
+        }else if (intentos == 1){
+            pswDigito2.setEchoChar((char)0);
+            intentos++;
+        }else{
+            jPistas.setText("Ya te di suficientes pistas");
+        }
+        
+    }//GEN-LAST:event_btnRevelarActionPerformed
+
+    private void jEscribirDigitosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEscribirDigitosActionPerformed
+        
+    }//GEN-LAST:event_jEscribirDigitosActionPerformed
+
+    private void jEscribirDigitosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEscribirDigitosKeyReleased
+        char compara1 = pswDigito1.getText().charAt(0);
+        char compara2 = pswDigito2.getText().charAt(0);
+        char compara3 = pswDigito3.getText().charAt(0);
+        
+        if (jEscribirDigitos.getText().length() >= 1){
+            if (jEscribirDigitos.getText().charAt(0) == compara1){
+            pswDigito1.setEchoChar((char)0);
+        }
+        }
+        
+        if (jEscribirDigitos.getText().length() >= 2){
+            if (jEscribirDigitos.getText().charAt(1) == compara2){
+            pswDigito2.setEchoChar((char)0);
+        }
+        }
+        
+        if (jEscribirDigitos.getText().length() == 3){
+            int numeroIngresado = Integer.parseInt(jEscribirDigitos.getText());
+            if (numeroIngresado > numeroRandom){
+            jPistas.setText("Pista: El numero secreto es menor");
+            fallidos++;
+        }else if (numeroIngresado < numeroRandom){
+            jPistas.setText("Pista: El numero secreto es mayor");
+            fallidos++;
+        }
+        }
+        
+        if (jEscribirDigitos.getText().length() == 3){
+            int numeroIngresado = Integer.parseInt(jEscribirDigitos.getText());
+            if (numeroIngresado == numeroRandom){
+                try {
+            URL url = new URL("https://images.vexels.com/media/users/3/202189/isolated/lists/4f3a5cb84297726d74d69dce22676f83-trofeo-numero-1plano.png");
+            ImageIcon icono = new ImageIcon(url);
+
+            jTrofeo.setIcon(icono);
+            jTrofeo.setVisible(true);
+            ImageIcon icon = new ImageIcon(url);
+            jPistas.setText("Felicidades! Te tomó " + fallidos + " intentos");
+
+        }catch (Exception e) {
+            System.out.println("No se pudo cargar la imagen");
+        }
+            }
+        }else{
+               jTrofeo.setVisible(false); 
+            }
+        
+    }//GEN-LAST:event_jEscribirDigitosKeyReleased
+
+    private void jEscribirDigitosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEscribirDigitosKeyTyped
+
+        
+        
+    }//GEN-LAST:event_jEscribirDigitosKeyTyped
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Panel;
     private javax.swing.JButton btnRevelar;
     private javax.swing.JDesktopPane dkpPantalla;
-    private javax.swing.JLabel lbMagnitud;
-    private javax.swing.JLabel lbTrofeo;
-    private javax.swing.JPasswordField psw1;
-    private javax.swing.JPasswordField psw2;
-    private javax.swing.JPasswordField psw3;
+    private javax.swing.JTextField jEscribirDigitos;
+    private javax.swing.JLabel jPistas;
+    private javax.swing.JLabel jTrofeo;
+    private javax.swing.JPasswordField pswDigito1;
+    private javax.swing.JPasswordField pswDigito2;
+    private javax.swing.JPasswordField pswDigito3;
     // End of variables declaration//GEN-END:variables
 }
